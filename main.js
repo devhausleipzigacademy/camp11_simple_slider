@@ -1,20 +1,41 @@
-const images = document.querySelectorAll(".slides img");
 const [slideLeftBtn, slideRightBtn] =
   document.querySelectorAll(".control button");
 
-let currentImage = 0;
+function slider(container) {
+  const images = document.querySelectorAll(`${container} img`);
+  let currentImage = 0;
 
-function slideLeft() {}
-
-function slideRight() {
-  const activeImage = document.querySelector(".slides img.active");
-  activeImage.classList.remove("active");
-  currentImage++;
-  if (currentImage > images.length - 1) {
-    currentImage = 0;
+  function removeActiveImage() {
+    const activeImage = document.querySelector(`${container} .active`);
+    activeImage.classList.remove("active");
   }
-  images[currentImage].classList.add("active");
+
+  function slideLeft() {
+    removeActiveImage();
+    currentImage--;
+    if (currentImage < 0) {
+      currentImage = images.length - 1;
+    }
+
+    images[currentImage].classList.add("active");
+  }
+
+  function slideRight() {
+    removeActiveImage();
+    currentImage++;
+    if (currentImage > images.length - 1) {
+      currentImage = 0;
+    }
+    images[currentImage].classList.add("active");
+  }
+
+  return {
+    slideLeft,
+    slideRight,
+  };
 }
+
+const { slideLeft, slideRight } = slider(".slide-container");
 
 slideLeftBtn.addEventListener("click", slideLeft);
 
